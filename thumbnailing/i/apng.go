@@ -1,13 +1,11 @@
 package i
 
 import (
-	"bytes"
 	"errors"
 	"image"
 	"image/draw"
 	"io"
 
-	"github.com/getsentry/sentry-go"
 	"github.com/kettek/apng"
 	"github.com/t2bot/matrix-media-repo/common/rcontext"
 	"github.com/t2bot/matrix-media-repo/thumbnailing/m"
@@ -18,7 +16,7 @@ type apngGenerator struct {
 }
 
 func (d apngGenerator) supportedContentTypes() []string {
-	return []string{"image/png", "image/apng"}
+	return []string{"image/apng"}
 }
 
 func (d apngGenerator) supportsAnimation() bool {
@@ -26,7 +24,7 @@ func (d apngGenerator) supportsAnimation() bool {
 }
 
 func (d apngGenerator) matches(img io.Reader, contentType string) bool {
-	return (contentType == "image/png" && isAnimatedPNG(img)) || contentType == "image/apng"
+	return contentType == "image/apng"
 }
 
 func (d apngGenerator) GetOriginDimensions(b io.Reader, contentType string, ctx rcontext.RequestContext) (bool, int, int, error) {
@@ -111,7 +109,7 @@ func (d apngGenerator) GenerateThumbnail(b io.Reader, contentType string, width 
 func init() {
 	generators = append(generators, apngGenerator{})
 }
-
+/*
 func isAnimatedPNG(r io.Reader) bool {
 	// APNG is signaled by an acTL chunk before the first IDAT chunk.
 	// Parse chunk headers instead of scanning raw bytes to avoid false positives
@@ -164,3 +162,4 @@ func isAnimatedPNG(r io.Reader) bool {
 		}
 	}
 }
+*/
