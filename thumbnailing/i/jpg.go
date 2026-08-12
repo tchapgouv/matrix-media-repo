@@ -3,7 +3,7 @@ package i
 import (
 	"errors"
 	"image"
-	_ "image/jpeg"
+	"image/jpeg"
 	"io"
 
 	"github.com/disintegration/imaging"
@@ -30,7 +30,11 @@ func (d jpgGenerator) matches(img io.Reader, contentType string) bool {
 }
 
 func (d jpgGenerator) GetOriginDimensions(b io.Reader, contentType string, ctx rcontext.RequestContext) (bool, int, int, error) {
-	return pngGenerator{}.GetOriginDimensions(b, contentType, ctx)
+	i, err := jpeg.DecodeConfig(b)
+	if err != nil {
+		return false, 0, 0, err
+	}
+	return true, i.Width, i.Height, nil
 }
 
 func (d jpgGenerator) GenerateThumbnail(b io.Reader, contentType string, width int, height int, method string, animated bool, ctx rcontext.RequestContext) (*m.Thumbnail, error) {
