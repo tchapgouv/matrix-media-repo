@@ -30,6 +30,10 @@ jobs:
         with:
           go-version-file: 'go.mod'
 
+      - name: Download Go modules
+        shell: bash
+        run: sh ./scripts/download-go-modules.sh
+
       - name: Install libheif (linux)
         if: runner.os == 'linux'
         run: "chmod +x ./.github/workflows/build-libheif.sh && ./.github/workflows/build-libheif.sh"

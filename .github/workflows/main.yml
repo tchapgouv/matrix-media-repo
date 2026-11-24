@@ -10,6 +10,8 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
+      - name: Download Go modules
+        run: sh ./scripts/download-go-modules.sh
       - name: "Install libheif"
         run: "chmod +x ./.github/workflows/build-libheif.sh && ./.github/workflows/build-libheif.sh"
       - run: './build.sh' # verify the thing compiles
@@ -21,6 +23,8 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
+      - name: Download Go modules
+        run: sh ./scripts/download-go-modules.sh
       - name: "Install libheif"
         run: "chmod +x ./.github/workflows/build-libheif.sh && ./.github/workflows/build-libheif.sh"
       - name: "Prepare: compile assets"
@@ -28,6 +32,8 @@ jobs:
       - name: "Run: compile assets"
         run: "$PWD/bin/compile_assets"
       - name: "Prepare: staticcheck"
+        env:
+          GODEBUG: http2client=0
         run: 'go install honnef.co/go/tools/cmd/staticcheck@latest'
       - run: 'go vet ./cmd/...'
       - run: 'staticcheck ./cmd/...'
@@ -39,6 +45,8 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
+      - name: Download Go modules
+        run: sh ./scripts/download-go-modules.sh
       - name: "Prepare: compile assets"
         run: "GOBIN=$PWD/bin go install -v ./cmd/utilities/compile_assets"
       - name: "Run: compile assets"
