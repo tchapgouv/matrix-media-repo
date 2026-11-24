@@ -11,7 +11,7 @@ RUN apk upgrade --no-cache && apk add --no-cache \
         dos2unix \
         build-base \
         pkgconf \
-        libheif-dev
+        'libheif-dev>=1.23.7'
 
 WORKDIR /opt
 
@@ -30,7 +30,7 @@ RUN apk upgrade --no-cache && apk add --no-cache \
         ca-certificates \
         imagemagick \
         ffmpeg \
-        libheif
+        'libheif>=1.23.7'
 
 COPY --from=builder /opt/bin/plugin_antispam_ocr /plugins/
 COPY --from=builder \
