@@ -21,14 +21,18 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v7
         with:
-          go-version: '1.22'
+          go-version-file: 'go.mod'
+
+      - name: Download Go modules
+        shell: bash
+        run: sh ./scripts/download-go-modules.sh
 
       - name: Install libheif (linux)
         if: runner.os == 'linux'
@@ -40,7 +44,7 @@ jobs:
           choco install pkgconfiglite
           git clone https://github.com/Microsoft/vcpkg.git
           cd vcpkg
-          git checkout 37ee1035430210394448cea04d60ee431df9ca0d
+          git checkout 2f8bf7a5bad48aaef99d80b221fca712f016ab8f
           .\bootstrap-vcpkg.bat
           .\vcpkg integrate install
           .\vcpkg install "libheif[core]:x64-windows"
@@ -74,7 +78,7 @@ jobs:
           rm -rv $PWD/bin/dist/compile_assets*
 
       - name: Upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}
           path: ./bin/dist/*
